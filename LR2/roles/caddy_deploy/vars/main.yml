@@ -1,0 +1,5 @@
+domain_name: diligent-prospero.2167551-cd72267.twc1.net
+
+log:
+  file: /var/log/caddy_access.log
+  level: "DEBUG"

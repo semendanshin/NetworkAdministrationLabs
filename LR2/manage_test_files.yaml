@@ -1,0 +1,37 @@
+- name: Manage test file lifecycle
+  hosts: localhost
+  tasks:
+    - name: Create a test file with initial content
+      copy:
+        content: "test_file_content"
+        dest: "{{ ansible_env.HOME }}/test.txt"
+
+    - name: Verify the file was created (optional)
+      stat:
+        path: "{{ ansible_env.HOME }}/test.txt"
+      register: test_file_status
+
+    - name: Print verification message
+      debug:
+        msg: "File exists and contains the expected content."
+      when: test_file_status.stat.exists
+
+    - name: Update the test file content
+      copy:
+        content: "updated_test_file_content"
+        dest: "{{ ansible_env.HOME }}/test.txt"
+
+    - name: Delete the test file
+      file:
+        path: "{{ ansible_env.HOME }}/test.txt"
+        state: absent
+
+    - name: Verify the file was deleted (optional)
+      stat:
+        path: "{{ ansible_env.HOME }}/test.txt"
+      register: test_file_status_deleted
+
+    - name: Print deletion verification message
+      debug:
+        msg: "File successfully deleted."
+      when: not test_file_status_deleted.stat.exists
